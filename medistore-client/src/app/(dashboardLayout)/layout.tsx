@@ -20,7 +20,6 @@ export default async function Page({ admindashboard, customerdashboard, sellerda
 
     
   const {data} = await userService.getSession()
-  console.log(data);
     const userInfo = {
         role: data.user.role
     }

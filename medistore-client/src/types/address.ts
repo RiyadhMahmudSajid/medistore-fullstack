@@ -4,5 +4,5 @@ export type Address = {
   phone: string;
   city: string;
   area: string;
-  userId: string;
+  userId?: string;
 };

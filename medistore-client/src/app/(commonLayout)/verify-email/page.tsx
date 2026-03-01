@@ -5,7 +5,6 @@ import { redirect } from "next/navigation"
 
 export default async function VerifyEmailPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
 const {token} = await searchParams
-    console.log(token);
     if (!token) {
         return (
             <div className="flex h-screen items-center justify-center">
@@ -23,7 +22,6 @@ const {token} = await searchParams
             }
 
         )
-        console.log(res);
         if (!res.ok) {
             return (
                 <div className="flex h-screen items-center justify-center">

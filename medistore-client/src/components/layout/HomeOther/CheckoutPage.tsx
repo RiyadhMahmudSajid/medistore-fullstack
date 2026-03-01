@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { env } from "@/env";
+import { createOrderAction } from "@/action/createOrderAction";
 
 type Props = {
     user: string
@@ -14,7 +15,7 @@ type Props = {
 const API_URL = env.NEXT_PUBLIC_API_URL
 
 const CheckoutPage = ({ user }: Props) => {
-    const { cart , removeFromCart } = useCart();
+    const { cart, removeFromCart } = useCart();
     const totalPrice = cart.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
 
     const form = useForm({
@@ -27,39 +28,30 @@ const CheckoutPage = ({ user }: Props) => {
         onSubmit: async ({ value }) => {
             const toastId = toast.loading("Processing...");
             try {
-                const addressRes = await fetch(`${API_URL}/address`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ ...value, userId: user }),
+                const res = await createOrderAction({
+                    ...value,
+                    customerId: user,
+                    totalPrice,
+                    items: cart.map((item: any) => ({
+                        medicineId: item.id,
+                        quantity: item.quantity,
+                        price: item.price,
+                    })),
                 });
 
-                const addressData = await addressRes.json();
-                if (!addressRes.ok) throw new Error("Failed to save address");
+                if (res.error) {
+                    throw new Error(res.error.message);
+                }
 
-                const orderRes = await fetch(`${API_URL}/order`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({
-                        customerId: user,
-                        addressId: addressData.id,
-                        totalPrice,
-                        items: cart.map((item: any) => ({
-                            medicineId: item.id,
-                            quantity: item.quantity,
-                            price: item.price
-                        })),
-                    }),
-                });
+                if (res.data?.paymentUrl) {
+                    window.location.href = res.data.paymentUrl;
 
-                const orderData = await orderRes.json();
-                if (orderData.paymentUrl) {
-                    window.location.href = orderData.paymentUrl;
                     cart.forEach((item) => {
                         removeFromCart(item.id);
                     });
                 }
+
+                toast.success("Order created!", { id: toastId });
             } catch (error: any) {
                 toast.error(error.message || "Error occurred", { id: toastId });
             }
@@ -69,7 +61,7 @@ const CheckoutPage = ({ user }: Props) => {
     return (
         <div className="max-w-xl mx-auto py-10 px-4">
             <h1 className="text-2xl font-bold mb-6">Checkout</h1>
-            
+
             <div className="space-y-8">
                 {/* Order Summary Simple List */}
                 <div className="border-b pb-4">
@@ -95,23 +87,23 @@ const CheckoutPage = ({ user }: Props) => {
                     className="space-y-4"
                 >
                     <h2 className="font-semibold">Shipping Details</h2>
-                    
+
                     <form.Field name="fullName">
                         {(field) => (
-                            <Input 
-                                placeholder="Full Name" 
-                                value={field.state.value} 
-                                onChange={(e) => field.handleChange(e.target.value)} 
+                            <Input
+                                placeholder="Full Name"
+                                value={field.state.value}
+                                onChange={(e) => field.handleChange(e.target.value)}
                             />
                         )}
                     </form.Field>
 
                     <form.Field name="phone">
                         {(field) => (
-                            <Input 
-                                placeholder="Phone Number" 
-                                value={field.state.value} 
-                                onChange={(e) => field.handleChange(e.target.value)} 
+                            <Input
+                                placeholder="Phone Number"
+                                value={field.state.value}
+                                onChange={(e) => field.handleChange(e.target.value)}
                             />
                         )}
                     </form.Field>
@@ -125,7 +117,7 @@ const CheckoutPage = ({ user }: Props) => {
                         </form.Field>
                     </div>
 
-                    <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800 h-12">
+                    <Button type="submit" variant="outline" className="w-full">
                         Pay Now ৳{totalPrice}
                     </Button>
                 </form>
