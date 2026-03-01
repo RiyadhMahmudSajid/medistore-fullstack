@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  // output          = "../generated/prisma"
+ 
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum OrderStatus {
+  PLACED
+  PROCESSING
+  SHIPPING
+  DELIVERED
+  CANCELLED
+}
+
+model Categories {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  medicines Medicines[]
+}
+
+model Medicines {
+  id           String      @id @default(uuid())
+  name         String      @db.VarChar(50)
+  description  String      @db.VarChar(1000)
+  price        Float
+  stock        Int         @default(0)
+  manufacturer String
+  image        String
+  categoryId   String
+  views        Int         @default(0)
+  category     Categories  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  sellerId     String
+  seller       User        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  reviews      Reviews[]
+  orderItem    OrderItem[]
+}
+
+model Address {
+  id       String  @id @default(uuid())
+  fullName String
+  phone    String
+  city     String
+  area     String
+  userId   String
+  order    Orders?
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Orders {
+  id         String      @id @default(uuid())
+  status     OrderStatus @default(PLACED)
+  totalPrice Float
+  createdAt  DateTime    @default(now())
+  updateAt   DateTime    @updatedAt
+  addressId  String      @unique
+  address    Address     @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   User        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  order      OrderItem[]
+}
+
+model OrderItem {
+  id         String @id @default(uuid())
+  orderId    String
+  medicineId String
+
+  quantity Int
+  price    Float
+  order    Orders    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  medicine Medicines @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+}
+
+model Reviews {
+  id         String    @id @default(uuid())
+  rating     Int
+  comment    String
+  medicineId String
+  medicine   Medicines @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   User      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(true)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  reviews  Reviews[]
+  seller   Medicines[]
+  address  Address[]
+  customer Orders[]
+
+  role String? @default("CUSTOMER")
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
