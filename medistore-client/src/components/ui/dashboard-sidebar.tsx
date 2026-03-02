@@ -35,7 +35,7 @@ export function DashboardSidebar({ user, ...props }: { user: { role: string } } 
                         <LayoutDashboard className="h-4 w-4" />
                     </div>
                     <span className="font-bold text-lg text-sidebar-foreground">
-                        Medi<span className="text-primary">Hub</span>
+                        Med<span className="text-primary">Plus</span>
                     </span>
                 </div>
             </SidebarHeader>

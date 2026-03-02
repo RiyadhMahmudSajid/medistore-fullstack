@@ -145,9 +145,7 @@ const router = useRouter()
                         <SelectItem value="SELLER">
                           Seller (Sell Medicines)
                         </SelectItem>
-                        <SelectItem value="ADMIN">
-                          ADMIN (Create Medicines)
-                        </SelectItem>
+                       
                       </SelectContent>
                     </Select>
                     {isInvalid && (
