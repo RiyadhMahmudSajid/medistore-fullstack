@@ -32,6 +32,8 @@ We built this platform with a focus on Security and Simplicity. To keep everythi
 ### Authentication & Services:
 * Better-Auth: For secure user authentication and session management.
 * Resend: For sending professional emails (verification, orders).
+### Payment: 
+* SSLCommerz.
 ### Deployment:
 * Vercel: For hosting the frontend (Next.js).
 * Render: For hosting the backend server and database.
