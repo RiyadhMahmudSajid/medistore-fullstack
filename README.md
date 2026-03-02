@@ -53,6 +53,11 @@ We built this platform with a focus on Security and Simplicity. To keep everythi
 * Real-time Order Tracking: Implement a live map-based tracking system for medicine delivery.
 * Prescription Upload: Allow customers to upload doctor prescriptions before ordering.
 * AI Medicine Suggestion: Add an AI-powered search to suggest alternative medicines.
+## Clone the Repositories
+First, clone both the Frontend and Backend repositories:
+* **Frontend:** git clone [frontend-repo-link](https://github.com/RiyadhMahmudSajid/medistore-client.git)
+* **Backend:** git clone [backend-repo-link](https://github.com/RiyadhMahmudSajid/medistore-server.git)
+  
 # [Live-Site:](https://medistore-client-beta.vercel.app/)
 
 
