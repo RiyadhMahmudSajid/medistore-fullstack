@@ -29,6 +29,8 @@ We built this platform with a focus on Security and Simplicity. To keep everythi
 * Node.js & Express: For building a powerful backend API.
 * PostgreSQL: As a reliable relational database.
 * Prisma: As an ORM to communicate easily with the database.
+### Validation 
+*Zod
 ### Authentication & Services:
 * Better-Auth: For secure user authentication and session management.
 * Resend: For sending professional emails (verification, orders).
