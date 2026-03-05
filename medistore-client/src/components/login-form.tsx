@@ -36,7 +36,7 @@ const formSchema = z.object({
   password: z
     .string()
     .min(8, "Description must be at least 8 characters."),
- 
+
 })
 
 
@@ -47,32 +47,32 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
       provider: "google",
       callbackURL: "https://medistore-client-beta.vercel.app"
     })
-    
+
   }
 
   const form = useForm({
     defaultValues: {
-   
+
       email: "",
       password: "",
-   
+
     },
     validators: {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      
+
       const tostId = toast.loading("LogIn User")
       try {
-       
+
         const { data, error } = await authClient.signIn.email(value)
-        
+
         if (error) {
           toast.error(error.message, { id: tostId })
+          return;
         }
         toast.success("LogIn Successfully", { id: tostId })
-         router.push("/") 
-        router.refresh() 
+        window.location.href = "/";
       } catch (err) {
         toast.error("Some thing went wrong", { id: tostId })
 
@@ -149,8 +149,8 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           Login
         </Button>
         <Button
-        className="w-full"
-        onClick={() => handleGoogleLogin()} variant="outline" type="button">
+          className="w-full"
+          onClick={() => handleGoogleLogin()} variant="outline" type="button">
           Login with Google
         </Button>
         <FieldDescription className="text-center">

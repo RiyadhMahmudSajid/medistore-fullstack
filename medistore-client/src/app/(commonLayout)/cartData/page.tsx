@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
+// export const dynamic = "force-static";
 import MyCart from '@/components/layout/cart/MyCart';
-import React from 'react';
+
 
 const page = () => {
   return (

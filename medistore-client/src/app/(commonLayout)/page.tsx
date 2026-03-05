@@ -1,7 +1,8 @@
-// export const dynamic = "force-dynamic";
+
+
+export const dynamic = "force-static"; 
+export const revalidate = 3600; 
 import HeroPage from "@/components/layout/Hero";
-
-
 
 
 

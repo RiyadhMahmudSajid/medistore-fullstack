@@ -1,4 +1,5 @@
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 import Image from "next/image";
 import medicineService from "@/components/modules/medicineService";
 import { Medicine } from "@/types";
