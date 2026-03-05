@@ -29,6 +29,8 @@ We built this platform with a focus on Security and Simplicity. To keep everythi
 * Node.js & Express: For building a powerful backend API.
 * PostgreSQL: As a reliable relational database.
 * Prisma: As an ORM to communicate easily with the database.
+### Validation 
+*Zod
 ### Authentication & Services:
 * Better-Auth: For secure user authentication and session management.
 * Resend: For sending professional emails (verification, orders).
@@ -53,6 +55,11 @@ We built this platform with a focus on Security and Simplicity. To keep everythi
 * Real-time Order Tracking: Implement a live map-based tracking system for medicine delivery.
 * Prescription Upload: Allow customers to upload doctor prescriptions before ordering.
 * AI Medicine Suggestion: Add an AI-powered search to suggest alternative medicines.
+## Clone the Repositories
+First, clone both the Frontend and Backend repositories:
+* **Frontend:** git clone [frontend-repo-link](https://github.com/RiyadhMahmudSajid/medistore-client.git)
+* **Backend:** git clone [backend-repo-link](https://github.com/RiyadhMahmudSajid/medistore-server.git)
+  
 # [Live-Site:](https://medistore-client-beta.vercel.app/)
 
 
